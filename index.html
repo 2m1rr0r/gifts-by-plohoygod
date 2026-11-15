@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Алина и Дима</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Onest:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  /* Layout idea: one column. Two soft blobs, one per partner, drift together behind a live day counter; the overlap is "мы". */
+  :root {
+    --bg: #f5f2fb;
+    --paper: #ffffff;
+    --ink: #1f1c3a;
+    --a: #ffadc0;
+    --b: #a9c8ff;
+    --accent: #d92f5b;
+    --muted: color-mix(in srgb, var(--ink) 68%, var(--bg));
+    --display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
+    --body: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
+    --hand: 'Caveat', 'Comic Sans MS', cursive;
+    color-scheme: light;
+  }
+
+  * { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.55;
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
+  h1, h2, h3, p { margin: 0; }
+  h1, h2, h3 { text-wrap: balance; }
+
+  /* Hero */
+  .hero { padding: 44px 0 24px; text-align: center; overflow: hidden; }
+  .names {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(1.3rem, 5vw, 1.9rem);
+    letter-spacing: -0.01em;
+  }
+  .names .amp { color: var(--accent); font-weight: 500; padding: 0 0.15em; }
+  .stage { position: relative; width: min(86vw, 460px); aspect-ratio: 1; margin: 16px auto 0; }
+  .blob {
+    position: absolute;
+    width: 68%;
+    aspect-ratio: 1;
+    mix-blend-mode: multiply;
+  }
+  .blob.a {
+    left: 0; top: 4%;
+    background: var(--a);
+    border-radius: 58% 42% 55% 45% / 48% 58% 42% 52%;
+    animation: morphA 16s ease-in-out infinite, meetA 2.6s cubic-bezier(.2, .8, .2, 1) both;
+  }
+  .blob.b {
+    right: 0; bottom: 4%;
+    background: var(--b);
+    border-radius: 46% 54% 42% 58% / 56% 44% 56% 44%;
+    animation: morphB 19s ease-in-out infinite, meetB 2.6s cubic-bezier(.2, .8, .2, 1) both;
+  }
+  @keyframes meetA { from { transform: translate(-22%, -8%); } to { transform: none; } }
+  @keyframes meetB { from { transform: translate(22%, 8%); } to { transform: none; } }
+  @keyframes morphA {
+    0%, 100% { border-radius: 58% 42% 55% 45% / 48% 58% 42% 52%; }
+    50% { border-radius: 44% 56% 40% 60% / 58% 42% 58% 42%; }
+  }
+  @keyframes morphB {
+    0%, 100% { border-radius: 46% 54% 42% 58% / 56% 44% 56% 44%; }
+    50% { border-radius: 60% 40% 58% 42% / 44% 58% 42% 56%; }
+  }
+  .count { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
+  .count-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  .count-days {
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(4.25rem, 19vw, 8.25rem);
+    line-height: 1;
+    letter-spacing: -0.03em;
+    font-variant-numeric: tabular-nums;
+    margin: 4px 0;
+  }
+  .count-word { font-family: var(--display); font-weight: 500; font-size: 1rem; }
+  .since { margin-top: 18px; color: var(--muted); font-weight: 500; }
+  .clock { display: flex; justify-content: center; gap: 22px; margin-top: 14px; }
+  .clock div { display: grid; gap: 2px; }
+  .clock b {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.5rem;
+    font-variant-numeric: tabular-nums;
+    min-width: 2ch;
+  }
+  .clock span { font-size: 0.75rem; color: var(--muted); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* Sections */
+  .section { padding: 48px 0 8px; }
+  .section h2 {
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: clamp(1.4rem, 5vw, 2rem);
+    line-height: 1.15;
+    margin-bottom: 24px;
+  }
+
+  /* Timeline */
+  .timeline { list-style: none; margin: 0; padding: 0; position: relative; display: grid; gap: 28px; }
+  .timeline::before {
+    content: "";
+    position: absolute; left: 15px; top: 6px; bottom: 6px; width: 2px;
+    background: color-mix(in srgb, var(--ink) 14%, transparent);
+  }
+  .tl-item { position: relative; padding-left: 50px; }
+  .tl-dot {
+    position: absolute; left: 2px; top: 4px; width: 28px; height: 28px;
+    background: var(--a);
+    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+  }
+  .tl-item:nth-child(even) .tl-dot { background: var(--b); border-radius: 42% 58% 46% 54% / 58% 44% 56% 42%; }
+  .tl-date { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .tl-title { font-family: var(--display); font-weight: 600; font-size: 1.05rem; line-height: 1.3; margin: 2px 0 6px; }
+  .tl-text { max-width: 60ch; }
+
+  /* Reasons */
+  .reasons { display: grid; gap: 14px; grid-template-columns: 1fr; }
+  @media (min-width: 560px) { .reasons { grid-template-columns: 1fr 1fr; } }
+  .reason {
+    background: var(--paper);
+    padding: 20px 20px 22px;
+    border-radius: 26px 8px 26px 8px;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .reason:nth-child(even) { border-radius: 8px 26px 8px 26px; }
+  .reason-n { font-family: var(--display); font-weight: 800; font-size: 1.5rem; color: var(--accent); line-height: 1; }
+
+  /* Quiz */
+  .quiz { background: var(--paper); border-radius: 28px; padding: 24px 20px; }
+  .q-step { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .q-text { font-family: var(--display); font-weight: 600; font-size: 1.15rem; line-height: 1.3; margin: 6px 0 16px; }
+  .options { display: grid; gap: 10px; }
+  .opt {
+    font: inherit; text-align: left; color: var(--ink);
+    min-height: 48px; padding: 12px 16px;
+    border-radius: 16px;
+    border: 2px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    background: var(--bg);
+    cursor: pointer;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  }
+  .opt:hover:not(:disabled) { border-color: var(--ink); }
+  .opt:disabled { color: var(--ink); cursor: default; }
+  .opt.right { background: var(--b); border-color: var(--ink); }
+  .opt.wrong { background: var(--a); border-color: var(--ink); }
+  .tag { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; }
+  .q-fb { margin-top: 16px; font-weight: 500; }
+  .score { font-family: var(--display); font-weight: 800; font-size: 3rem; line-height: 1.1; margin: 4px 0; }
+  .btn {
+    font: inherit; font-weight: 600;
+    margin-top: 16px; min-height: 48px; padding: 12px 22px;
+    border-radius: 999px; border: 2px solid var(--accent);
+    background: var(--accent); color: var(--paper);
+    cursor: pointer;
+  }
+  .btn:hover { filter: brightness(0.94); }
+  .btn.ghost { background: transparent; color: var(--accent); }
+  .opt:focus-visible, .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+  /* Letter */
+  .letter {
+    background: var(--paper);
+    border-radius: 6px 28px 6px 28px;
+    padding: 28px 24px;
+    transform: rotate(-0.5deg);
+    font-family: var(--hand);
+    font-weight: 500;
+    font-size: 1.55rem;
+    line-height: 1.4;
+    box-shadow: 0 18px 40px -24px color-mix(in srgb, var(--ink) 40%, transparent);
+  }
+  .letter p + p { margin-top: 14px; }
+  .letter .sign { text-align: right; font-weight: 600; }
+
+  .foot { text-align: center; color: var(--muted); font-size: 0.9rem; padding: 48px 0 56px; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .blob { animation: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero wrap">
+  <h1 class="names" id="names"></h1>
+  <div class="stage">
+    <div class="blob a" aria-hidden="true"></div>
+    <div class="blob b" aria-hidden="true"></div>
+    <div class="count">
+      <p class="count-label">мы вместе</p>
+      <p class="count-days" id="days">0</p>
+      <p class="count-word" id="days-word">дней</p>
+    </div>
+  </div>
+  <div class="since" id="since"></div>
+  <div class="clock" role="timer" aria-live="off">
+    <div><b id="hh">00</b><span>часов</span></div>
+    <div><b id="mm">00</b><span>минут</span></div>
+    <div><b id="ss">00</b><span>секунд</span></div>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="section" aria-labelledby="h-story">
+    <h2 id="h-story">Наша история</h2>
+    <ol class="timeline" id="timeline"></ol>
+  </section>
+
+  <section class="section" aria-labelledby="h-reasons">
+    <h2 id="h-reasons">За что я тебя люблю</h2>
+    <div class="reasons" id="reasons"></div>
+  </section>
+
+  <section class="section" aria-labelledby="h-quiz">
+    <h2 id="h-quiz">Как хорошо ты меня знаешь?</h2>
+    <div class="quiz" id="quiz"></div>
+  </section>
+
+  <section class="section" aria-labelledby="h-letter">
+    <h2 id="h-letter">Письмо</h2>
+    <div class="letter" id="letter"></div>
+  </section>
+</main>
+
+<footer class="foot wrap" id="foot"></footer>
+
+<noscript><p class="wrap">Для этой страницы нужен включённый JavaScript.</p></noscript>
+
+<script>
+/* ============================================================
+   НАСТРОЙКИ ЗАКАЗА. Для нового заказа меняется только блок
+   между метками GIFT-START и GIFT-END (его подставляет make_order.py).
+   Формат: JSON (ключи в кавычках, без комментариев).
+   - names: два имени в том порядке, как они стоят в заголовке.
+   - start: момент, с которого вместе, "ГГГГ-ММ-ДДTЧЧ:ММ:СС" (время зрителя).
+   - startLabel: подпись под счётчиком.
+   - moments: {date, title, text} — история пары.
+   - reasons: причины любви.
+   - quiz: {q, options, answer, right, wrong}; answer — номер верного
+     варианта с нуля.
+   - quizResults: ключи "0".."N" — число верных ответов, N = длина quiz.
+   - letter: {greeting, paragraphs, sign}.
+   - footer: строка внизу страницы, "" — без подписи.
+   ============================================================ */
+/* GIFT-START */
+const GIFT = {
+  "names": [
+    "Алина",
+    "Дима"
+  ],
+  "start": "2025-02-14T20:00:00",
+  "startLabel": "с 14 февраля 2025",
+  "moments": [
+    {
+      "date": "14 февраля 2025",
+      "title": "Первое «да»",
+      "text": "Ты написала: «ну ладно, давай». Это было самое романтичное «ну ладно» в моей жизни."
+    },
+    {
+      "date": "3 мая 2025",
+      "title": "Первая поездка",
+      "text": "Опоздали на электричку, зато нашли лучшее место для рассвета. С тех пор я люблю опаздывать с тобой."
+    },
+    {
+      "date": "Июль 2025",
+      "title": "Первая катка вдвоём",
+      "text": "Ты сказала, что играешь просто чтобы побыть со мной. И выиграла. Я до сих пор не понимаю, как."
+    },
+    {
+      "date": "Сентябрь 2025",
+      "title": "Расстояние",
+      "text": "Мы жили в разных городах. Писали друг другу каждое утро, и это работало лучше любых слов."
+    },
+    {
+      "date": "Сегодня",
+      "title": "Дальше — больше",
+      "text": "Впереди столько всего, и я хочу увидеть это с тобой."
+    }
+  ],
+  "reasons": [
+    "Ты смеёшься над моими шутками, даже когда они плохие.",
+    "С тобой тихий вечер лучше любой вечеринки.",
+    "Ты замечаешь мелочи, о которых я сам забыл рассказать.",
+    "Ты умеешь поддержать так, что сразу становится легче.",
+    "Рядом с тобой я становлюсь лучше и не замечаю усилий.",
+    "Ты мой любимый человек для любого «а давай прямо сейчас»."
+  ],
+  "quiz": [
+    {
+      "q": "Какой мой любимый напиток?",
+      "options": [
+        "Кофе с молоком",
+        "Чай с лимоном",
+        "Какао",
+        "Энергетик"
+      ],
+      "answer": 1,
+      "right": "Верно. Ты знаешь меня лучше, чем я сам.",
+      "wrong": "Почти. Но я тебе это прощаю."
+    },
+    {
+      "q": "Куда я мечтаю поехать?",
+      "options": [
+        "В Японию",
+        "В Исландию",
+        "В Грузию",
+        "В Италию"
+      ],
+      "answer": 0,
+      "right": "Да! Билеты за тобой.",
+      "wrong": "Не угадала. Придётся съездить во все четыре."
+    },
+    {
+      "q": "Что я делаю первым делом утром?",
+      "options": [
+        "Проверяю телефон",
+        "Ставлю чайник",
+        "Пишу тебе",
+        "Сплю ещё"
+      ],
+      "answer": 2,
+      "right": "Именно. Каждое утро, без исключений.",
+      "wrong": "Нет. Правильный ответ тебе понравится: пишу тебе."
+    }
+  ],
+  "quizResults": {
+    "3": "Идеально. Ты знаешь меня наизусть.",
+    "2": "Почти отлично. Остальное узнаешь на свидании.",
+    "1": "Есть куда расти. Нам нужно больше времени вместе.",
+    "0": "Нам определённо нужно больше времени вместе. Начнём прямо сейчас."
+  },
+  "letter": {
+    "greeting": "Алина,",
+    "paragraphs": [
+      "я долго думал, как сказать это красиво, и понял, что красиво не получится. Поэтому скажу просто: я счастлив, что ты есть.",
+      "Спасибо за каждый день. За те, где мы смеялись, и за те, где просто молчали рядом. Для меня это одно и то же.",
+      "Давай продолжим. Я никуда не тороплюсь, пока ты рядом."
+    ],
+    "sign": "Твой Дима"
+  },
+  "footer": "Хочешь такую же страницу для своей половинки? Напиши: @plohoygod"
+};
+/* GIFT-END */
+
+/* ============================================================
+   Ниже менять не нужно.
+   ============================================================ */
+const $ = (s) => document.querySelector(s);
+function el(tag, cls, text) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text != null) n.textContent = text;
+  return n;
+}
+function plural(n, forms) {
+  const a = Math.abs(n) % 100, b = a % 10;
+  if (a > 10 && a < 20) return forms[2];
+  if (b > 1 && b < 5) return forms[1];
+  if (b === 1) return forms[0];
+  return forms[2];
+}
+const pad = (n) => String(n).padStart(2, "0");
+
+/* Hero */
+(function hero() {
+  const h1 = $("#names");
+  h1.append(GIFT.names[0], el("span", "amp", "и"), GIFT.names[1]);
+  $("#since").textContent = GIFT.startLabel;
+
+  const days = $("#days");
+  const word = $("#days-word");
+
+  const start = new Date(GIFT.start).getTime();
+  function tick() {
+    let d = Math.max(0, Date.now() - start);
+    const dd = Math.floor(d / 864e5); d -= dd * 864e5;
+    const h = Math.floor(d / 36e5); d -= h * 36e5;
+    const m = Math.floor(d / 6e4); d -= m * 6e4;
+    const s = Math.floor(d / 1e3);
+    days.textContent = dd;
+    word.textContent = plural(dd, ["день", "дня", "дней"]);
+    $("#hh").textContent = pad(h);
+    $("#mm").textContent = pad(m);
+    $("#ss").textContent = pad(s);
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+
+/* Timeline */
+GIFT.moments.forEach((m) => {
+  const li = el("li", "tl-item");
+  const dot = el("span", "tl-dot");
+  dot.setAttribute("aria-hidden", "true");
+  li.append(dot, el("p", "tl-date", m.date), el("h3", "tl-title", m.title), el("p", "tl-text", m.text));
+  $("#timeline").append(li);
+});
+
+/* Reasons */
+GIFT.reasons.forEach((t, i) => {
+  const card = el("article", "reason");
+  card.append(el("p", "reason-n", pad(i + 1)), el("p", "reason-t", t));
+  $("#reasons").append(card);
+});
+
+/* Quiz */
+(function quiz() {
+  const box = $("#quiz");
+  let i = 0, score = 0;
+
+  function renderQuestion() {
+    box.replaceChildren();
+    const q = GIFT.quiz[i];
+    const last = i === GIFT.quiz.length - 1;
+    const opts = el("div", "options");
+    const fb = el("p", "q-fb");
+    fb.setAttribute("aria-live", "polite");
+    const next = el("button", "btn", last ? "Узнать результат" : "Дальше");
+    next.type = "button";
+    next.id = "quiz-next";
+    next.hidden = true;
+
+    q.options.forEach((text, k) => {
+      const b = el("button", "opt");
+      b.type = "button";
+      b.id = "opt-" + i + "-" + k;
+      b.append(el("span", null, text));
+      b.addEventListener("click", () => {
+        const ok = k === q.answer;
+        if (ok) score++;
+        [...opts.children].forEach((c, j) => {
+          c.disabled = true;
+          if (j === q.answer) { c.classList.add("right"); c.append(el("span", "tag", "Верный ответ")); }
+          else if (j === k) { c.classList.add("wrong"); c.append(el("span", "tag", "Твой ответ")); }
+        });
+        fb.textContent = ok ? q.right : q.wrong;
+        next.hidden = false;
+        next.focus();
+      });
+      opts.append(b);
+    });
+
+    next.addEventListener("click", () => {
+      i++;
+      if (i < GIFT.quiz.length) renderQuestion(); else renderResult();
+    });
+
+    box.append(
+      el("p", "q-step", "Вопрос " + (i + 1) + " из " + GIFT.quiz.length),
+      el("h3", "q-text", q.q),
+      opts, fb, next
+    );
+  }
+
+  function renderResult() {
+    box.replaceChildren();
+    const n = GIFT.quiz.length;
+    const again = el("button", "btn ghost", "Пройти ещё раз");
+    again.type = "button";
+    again.id = "quiz-again";
+    again.addEventListener("click", () => { i = 0; score = 0; renderQuestion(); });
+    box.append(
+      el("p", "q-step", "Результат"),
+      el("p", "score", score + " из " + n),
+      el("p", "q-fb", GIFT.quizResults[score] || ""),
+      again
+    );
+  }
+
+  renderQuestion();
+})();
+
+/* Letter */
+(function letter() {
+  const box = $("#letter");
+  box.append(el("p", null, GIFT.letter.greeting));
+  GIFT.letter.paragraphs.forEach((t) => box.append(el("p", null, t)));
+  box.append(el("p", "sign", GIFT.letter.sign));
+})();
+
+$("#foot").textContent = GIFT.footer;
+</script>
+</body>
+</html>
