@@ -2,73 +2,66 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex">
 <title>Алина и Дима</title>
+<meta name="description" content="Это тебе 💌 Открой, когда будет минутка.">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Алина и Дима">
+<meta property="og:description" content="Это тебе 💌 Открой, когда будет минутка.">
+<meta property="og:image" content="https://2m1rr0r.github.io/gifts-by-plohoygod/p-02ca4123dc.jpg">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#ffe8ed">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;800&family=Onest:wght@400;500;600&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Onest:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  /* Layout idea: one column. Two soft blobs, one per partner, drift together behind a live day counter; the overlap is "мы". */
+  /* An album made by hand. Each partner has a colour: the page starts in the first one and ends in the
+     second, and two blobs in those colours meet when the recipient holds the screen. Photos are prints
+     taped to the page, titles and dates are handwritten, everything else stays quiet. */
   :root {
-    --bg: #f5f2fb;
-    --paper: #ffffff;
-    --ink: #1f1c3a;
-    --a: #ffadc0;
-    --b: #a9c8ff;
+    --a: #ff9fb6;
+    --b: #a9c1ff;
+    --page-a: #ffe8ed;
+    --page-b: #e8eeff;
+    --paper: #fffdfa;
+    --ink: #2a1a2b;
     --accent: #d92f5b;
-    --muted: color-mix(in srgb, var(--ink) 68%, var(--bg));
-    --display: 'Unbounded', 'Arial Black', system-ui, sans-serif;
+    --muted: color-mix(in srgb, var(--ink) 66%, #fff);
+    --line: color-mix(in srgb, var(--ink) 18%, transparent);
+    --lift: 0 1px 2px rgba(42, 26, 43, .16), 0 20px 30px -20px rgba(42, 26, 43, .5);
+    --hand: 'Caveat', 'Segoe Print', 'Comic Sans MS', cursive;
     --body: 'Onest', system-ui, -apple-system, 'Segoe UI', sans-serif;
-    --hand: 'Caveat', 'Comic Sans MS', cursive;
+    --ease: cubic-bezier(.2, .8, .2, 1);
     color-scheme: light;
   }
 
   * { box-sizing: border-box; }
   [hidden] { display: none !important; }
-  html { -webkit-text-size-adjust: 100%; }
+  html {
+    -webkit-text-size-adjust: 100%;
+    min-height: 100%;
+    background-color: var(--page-b);
+    background-image:
+      url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='180' height='180'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 .3  0 0 0 0 .18  0 0 0 0 .3  0 0 0 .11 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"),
+      linear-gradient(180deg, var(--page-a) 0%, var(--page-a) 16%, var(--page-b) 84%, var(--page-b) 100%);
+    background-size: 180px 180px, 100% 100%;
+    background-repeat: repeat, no-repeat;
+  }
+  html.locked, html.locked body { overflow: hidden; }
   body {
     margin: 0;
-    background: var(--bg);
     color: var(--ink);
     font-family: var(--body);
     font-size: 1.0625rem;
     line-height: 1.55;
   }
-  .wrap { max-width: 720px; margin: 0 auto; padding: 0 20px; }
-  h1, h2, h3, p { margin: 0; }
-  h1, h2, h3 { text-wrap: balance; }
+  .wrap { max-width: 640px; margin: 0 auto; padding: 0 20px; }
+  h1, h2, h3, p, ul, ol, figure { margin: 0; }
+  ul, ol { padding: 0; list-style: none; }
+  button { -webkit-tap-highlight-color: transparent; }
+  .icons { position: absolute; width: 0; height: 0; }
 
-  /* Hero */
-  .hero { padding: 44px 0 24px; text-align: center; overflow: hidden; }
-  .names {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: clamp(1.3rem, 5vw, 1.9rem);
-    letter-spacing: -0.01em;
-  }
-  .names .amp { color: var(--accent); font-weight: 500; padding: 0 0.15em; }
-  .stage { position: relative; width: min(86vw, 460px); aspect-ratio: 1; margin: 16px auto 0; }
-  .blob {
-    position: absolute;
-    width: 68%;
-    aspect-ratio: 1;
-    mix-blend-mode: multiply;
-  }
-  .blob.a {
-    left: 0; top: 4%;
-    background: var(--a);
-    border-radius: 58% 42% 55% 45% / 48% 58% 42% 52%;
-    animation: morphA 16s ease-in-out infinite, meetA 2.6s cubic-bezier(.2, .8, .2, 1) both;
-  }
-  .blob.b {
-    right: 0; bottom: 4%;
-    background: var(--b);
-    border-radius: 46% 54% 42% 58% / 56% 44% 56% 44%;
-    animation: morphB 19s ease-in-out infinite, meetB 2.6s cubic-bezier(.2, .8, .2, 1) both;
-  }
-  @keyframes meetA { from { transform: translate(-22%, -8%); } to { transform: none; } }
-  @keyframes meetB { from { transform: translate(22%, 8%); } to { transform: none; } }
   @keyframes morphA {
     0%, 100% { border-radius: 58% 42% 55% 45% / 48% 58% 42% 52%; }
     50% { border-radius: 44% 56% 40% 60% / 58% 42% 58% 42%; }
@@ -77,81 +70,281 @@
     0%, 100% { border-radius: 46% 54% 42% 58% / 56% 44% 56% 44%; }
     50% { border-radius: 60% 40% 58% 42% / 44% 58% 42% 56%; }
   }
-  .count { position: absolute; inset: 0; display: grid; place-content: center; text-align: center; }
-  .count-label { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
-  .count-days {
-    font-family: var(--display);
-    font-weight: 800;
-    font-size: clamp(4.25rem, 19vw, 8.25rem);
-    line-height: 1;
-    letter-spacing: -0.03em;
-    font-variant-numeric: tabular-nums;
-    margin: 4px 0;
-  }
-  .count-word { font-family: var(--display); font-weight: 500; font-size: 1rem; }
-  .since { margin-top: 18px; color: var(--muted); font-weight: 500; }
-  .clock { display: flex; justify-content: center; gap: 22px; margin-top: 14px; }
-  .clock div { display: grid; gap: 2px; }
-  .clock b {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: 1.5rem;
-    font-variant-numeric: tabular-nums;
-    min-width: 2ch;
-  }
-  .clock span { font-size: 0.75rem; color: var(--muted); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+  @keyframes rise { from { opacity: 0; transform: translateY(12px); } }
 
-  /* Sections */
-  .section { padding: 48px 0 8px; }
-  .section h2 {
-    font-family: var(--display);
-    font-weight: 700;
-    font-size: clamp(1.4rem, 5vw, 2rem);
-    line-height: 1.15;
-    margin-bottom: 24px;
+  /* ---------- Intro: hold until we meet ---------- */
+  .intro {
+    position: fixed; inset: 0; z-index: 50;
+    background: var(--page-a);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 14px; padding: 24px 16px; text-align: center;
+    overflow: hidden;
+    -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;
+    transition: opacity .8s ease .15s, visibility 0s linear 1s;
   }
-
-  /* Timeline */
-  .timeline { list-style: none; margin: 0; padding: 0; position: relative; display: grid; gap: 28px; }
-  .timeline::before {
-    content: "";
-    position: absolute; left: 15px; top: 6px; bottom: 6px; width: 2px;
-    background: color-mix(in srgb, var(--ink) 14%, transparent);
+  .intro.done { opacity: 0; visibility: hidden; pointer-events: none; }
+  .intro-to {
+    font-family: var(--hand); font-weight: 700;
+    font-size: clamp(2.5rem, 12vw, 3.4rem); line-height: 1; text-wrap: balance;
   }
-  .tl-item { position: relative; padding-left: 50px; }
-  .tl-dot {
-    position: absolute; left: 2px; top: 4px; width: 28px; height: 28px;
+  .intro-stage {
+    --p: 0;
+    position: relative; width: min(86vw, 400px); aspect-ratio: 1.3;
+    touch-action: none; cursor: pointer; border-radius: 28px; outline: none;
+  }
+  .intro-stage:focus-visible { outline: 3px solid var(--ink); outline-offset: 6px; }
+  .iblob {
+    position: absolute; top: 50%; left: 50%; width: 50%; aspect-ratio: 1;
+    mix-blend-mode: multiply;
+    display: grid; place-items: center;
+    transition: scale .6s var(--ease);
+  }
+  .iblob.a {
     background: var(--a);
-    border-radius: 60% 40% 55% 45% / 50% 60% 40% 50%;
+    transform: translate(calc(-50% - 32% - (1 - var(--p)) * 30%), -50%);
+    animation: morphA 16s ease-in-out infinite;
   }
-  .tl-item:nth-child(even) .tl-dot { background: var(--b); border-radius: 42% 58% 46% 54% / 58% 44% 56% 42%; }
-  .tl-date { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-  .tl-title { font-family: var(--display); font-weight: 600; font-size: 1.05rem; line-height: 1.3; margin: 2px 0 6px; }
-  .tl-text { max-width: 60ch; }
+  .iblob.b {
+    background: var(--b);
+    transform: translate(calc(-50% + 32% + (1 - var(--p)) * 30%), -50%);
+    animation: morphB 19s ease-in-out infinite;
+  }
+  .iblob span {
+    font-family: var(--hand); font-weight: 700;
+    font-size: clamp(3.4rem, 17vw, 4.6rem); line-height: 1;
+    opacity: calc(1 - var(--p) * 1.6);
+  }
+  .iblob.a span { translate: -12% 0; }
+  .iblob.b span { translate: 12% 0; }
+  .we {
+    position: absolute; inset: 0; display: grid; place-items: center;
+    font-family: var(--hand); font-weight: 700;
+    font-size: clamp(3.8rem, 19vw, 5rem); line-height: 1;
+    opacity: calc((var(--p) - .55) * 2.4);
+    pointer-events: none;
+  }
+  .intro-stage::after {
+    content: ""; position: absolute; left: 50%; top: 50%;
+    width: 72px; height: 72px; margin: -36px 0 0 -36px;
+    border-radius: 50%; border: 2px solid var(--accent);
+    animation: ring 2s ease-out infinite;
+    pointer-events: none;
+  }
+  .intro-stage.holding::after, .intro-stage.met::after { animation: none; opacity: 0; }
+  @keyframes ring { from { scale: .5; opacity: .9; } to { scale: 1.6; opacity: 0; } }
+  .intro-stage.holding .iblob { scale: 1.05; }
+  .intro-stage.met .iblob { scale: 1.3; }
+  .intro-hint { color: var(--muted); font-weight: 500; line-height: 1.4; }
+  .intro-skip {
+    background: none; border: 0; padding: 8px 12px; font: inherit; font-size: .9rem;
+    color: var(--muted); text-decoration: underline; text-underline-offset: 3px; cursor: pointer;
+  }
 
-  /* Reasons */
-  .reasons { display: grid; gap: 14px; grid-template-columns: 1fr; }
-  @media (min-width: 560px) { .reasons { grid-template-columns: 1fr 1fr; } }
-  .reason {
+  /* ---------- Prints: photos taped to the page ---------- */
+  .print {
+    position: relative;
     background: var(--paper);
-    padding: 20px 20px 22px;
-    border-radius: 26px 8px 26px 8px;
-    display: flex; flex-direction: column; gap: 10px;
+    padding: 10px 10px 12px;
+    box-shadow: var(--lift);
+    rotate: var(--r, 0deg);
   }
-  .reason:nth-child(even) { border-radius: 8px 26px 8px 26px; }
-  .reason-n { font-family: var(--display); font-weight: 800; font-size: 1.5rem; color: var(--accent); line-height: 1; }
+  .print::before {
+    content: ""; position: absolute; z-index: 1; top: -13px; left: 50%;
+    width: 92px; height: 26px; translate: -50% 0; rotate: var(--tr, -3deg);
+    background: color-mix(in srgb, var(--tape, var(--a)) 72%, transparent);
+    clip-path: polygon(0 0, 3% 22%, 0 44%, 3% 66%, 0 88%, 2% 100%, 98% 100%, 100% 80%, 97% 58%, 100% 36%, 97% 14%, 100% 0);
+  }
+  .ph {
+    display: block; width: 100%; padding: 0; border: 0; cursor: zoom-in;
+    background: color-mix(in srgb, var(--tape, var(--a)) 34%, var(--paper));
+  }
+  .ph img { display: block; width: 100%; aspect-ratio: var(--ar, 4 / 5); object-fit: cover; object-position: 50% 30%; }
+  .print figcaption {
+    font-family: var(--hand); font-weight: 600; font-size: 1.5rem; line-height: 1.1;
+    text-align: center; padding: 9px 4px 0;
+  }
 
-  /* Quiz */
-  .quiz { background: var(--paper); border-radius: 28px; padding: 24px 20px; }
-  .q-step { font-size: 0.8rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-  .q-text { font-family: var(--display); font-weight: 600; font-size: 1.15rem; line-height: 1.3; margin: 6px 0 16px; }
+  /* ---------- Hero ---------- */
+  .hero { padding: 34px 0 8px; text-align: center; overflow: hidden; }
+  .names { font-family: var(--hand); font-weight: 700; font-size: clamp(2.4rem, 11vw, 3.1rem); line-height: 1; }
+  .names .amp { color: var(--accent); padding: 0 .2em; }
+  .stage { position: relative; width: min(88vw, 420px); margin: 12px auto 0; display: grid; place-items: center; }
+  .stage.bare { aspect-ratio: 1; }
+  .blob { position: absolute; width: 64%; aspect-ratio: 1; mix-blend-mode: multiply; }
+  .stage.bare .blob { width: 68%; }
+  .blob.a {
+    left: 0; top: 2%;
+    background: var(--a);
+    border-radius: 58% 42% 55% 45% / 48% 58% 42% 52%;
+    animation: morphA 16s ease-in-out infinite, meetA 2.6s var(--ease) both;
+  }
+  .blob.b {
+    right: 0; bottom: 2%;
+    background: var(--b);
+    border-radius: 46% 54% 42% 58% / 56% 44% 56% 44%;
+    animation: morphB 19s ease-in-out infinite, meetB 2.6s var(--ease) both;
+  }
+  .stage:not(.go) .blob { animation-play-state: paused; }
+  @keyframes meetA { from { transform: translate(-22%, -8%); } to { transform: none; } }
+  @keyframes meetB { from { transform: translate(22%, 8%); } to { transform: none; } }
+  .print.cover { width: 70%; margin: 28px 0 32px; --r: -3deg; --tr: 4deg; }
+  .stage:not(.go) .cover { opacity: 0; }
+  .stage.go .cover { animation: drop 1s var(--ease) both; }
+  @keyframes drop { from { opacity: 0; transform: translateY(-34px) rotate(-9deg) scale(.92); } }
+
+  .count { display: grid; justify-items: center; }
+  .stage.bare .count { position: absolute; inset: 0; place-content: center; }
+  .count-label { font-weight: 500; color: var(--muted); }
+  .stage.bare .count-label { color: var(--ink); }
+  .count-line { position: relative; display: flex; align-items: baseline; gap: 14px; font-family: var(--hand); font-weight: 700; line-height: .86; }
+  .count-days { font-size: clamp(5.4rem, 27vw, 7.4rem); font-variant-numeric: tabular-nums; }
+  .count-word { font-size: clamp(2.1rem, 10vw, 2.8rem); }
+  .count-line::after {
+    content: ""; position: absolute; left: -4%; right: -4%; bottom: -.1em; height: 12px;
+    background: var(--accent);
+    -webkit-mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'><path d='M3 9 C30 3 52 12 84 7 S140 3 168 8 197 5 197 5' fill='none' stroke='black' stroke-width='4' stroke-linecap='round' vector-effect='non-scaling-stroke'/></svg>") center / 100% 100% no-repeat;
+    mask: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 14' preserveAspectRatio='none'><path d='M3 9 C30 3 52 12 84 7 S140 3 168 8 197 5 197 5' fill='none' stroke='black' stroke-width='4' stroke-linecap='round' vector-effect='non-scaling-stroke'/></svg>") center / 100% 100% no-repeat;
+  }
+  .clock { margin-top: 20px; color: var(--muted); font-weight: 500; }
+  .clock b { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+  .since { margin-top: 2px; color: var(--muted); }
+  .cue { margin-top: 26px; display: grid; justify-items: center; gap: 2px; font-family: var(--hand); font-weight: 600; font-size: 1.5rem; line-height: 1.1; }
+  .cue svg { width: 20px; height: 34px; color: var(--accent); }
+
+  /* ---------- Sections ---------- */
+  .section { padding-top: 76px; }
+  .section h2 {
+    font-family: var(--hand); font-weight: 700;
+    font-size: clamp(2.3rem, 10.5vw, 2.9rem); line-height: 1; text-wrap: balance;
+    margin-bottom: 22px;
+  }
+  .aside { font-family: var(--hand); font-weight: 600; font-size: 1.55rem; line-height: 1.15; }
+
+  /* Numbers: written on the page, no boxes */
+  .facts { display: grid; }
+  .fact { display: flex; gap: 16px; align-items: center; padding: 14px 0; }
+  .fact + .fact { border-top: 2px dashed var(--line); }
+  .ico {
+    flex: none; width: 54px; aspect-ratio: 1; display: grid; place-items: center;
+    background: var(--a); border-radius: 58% 42% 55% 45% / 48% 58% 42% 52%;
+  }
+  .fact:nth-child(even) .ico { background: var(--b); border-radius: 46% 54% 42% 58% / 56% 44% 56% 44%; }
+  .ico svg { width: 26px; height: 26px; fill: none; stroke: var(--ink); stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
+  .ico svg.beat { fill: var(--accent); stroke: none; animation: beat .857s ease-in-out infinite; }
+  @keyframes beat { 0%, 46%, 100% { scale: 1; } 12% { scale: 1.26; } 24% { scale: 1; } 34% { scale: 1.14; } }
+  .fact-t { min-width: 0; }
+  .fact-t b { display: block; font-weight: 800; font-size: 1.75rem; line-height: 1.1; letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+  .fact.pulse .fact-t b { font-size: clamp(2rem, 9.4vw, 2.5rem); color: var(--accent); }
+  .fact-t span { display: block; line-height: 1.35; margin-top: 2px; }
+  .fact-t small { display: block; color: var(--muted); font-size: .85rem; line-height: 1.35; margin-top: 2px; }
+
+  .soon { margin-top: 34px; }
+  .miles { display: grid; gap: 14px; margin-top: 12px; }
+  .mile { display: flex; gap: 16px; align-items: center; }
+  .leaf {
+    flex: none; width: 60px; background: var(--paper); box-shadow: var(--lift);
+    text-align: center; rotate: -3deg; overflow: hidden; border-radius: 3px;
+  }
+  .mile:nth-child(even) .leaf { rotate: 2.5deg; }
+  .leaf span { display: block; background: var(--accent); color: #fff; font-size: .8rem; font-weight: 600; line-height: 1.6; }
+  .leaf b { display: block; font-weight: 800; font-size: 1.6rem; line-height: 1.35; }
+  .mile-t b { display: block; font-weight: 700; font-size: 1.1rem; line-height: 1.3; }
+  .mile-t span { color: var(--muted); }
+  .mile.today .mile-t span { color: var(--accent); font-weight: 600; }
+
+  /* Story */
+  .timeline { position: relative; display: grid; gap: 42px; }
+  .timeline::before {
+    content: ""; position: absolute; left: 11px; top: 16px; bottom: 16px;
+    border-left: 2px dashed color-mix(in srgb, var(--ink) 30%, transparent);
+  }
+  .tl-item { position: relative; padding-left: 42px; }
+  .tl-dot { position: absolute; left: 0; top: 5px; width: 24px; height: 24px; fill: var(--a); stroke: var(--ink); stroke-width: 1.4; stroke-linejoin: round; }
+  .tl-item:nth-child(even) .tl-dot { fill: var(--b); }
+  .tl-date { font-family: var(--hand); font-weight: 700; font-size: 1.6rem; line-height: 1.1; color: var(--accent); }
+  .tl-title { font-weight: 700; font-size: 1.2rem; line-height: 1.3; margin: 4px 0 6px; }
+  .tl-text { max-width: 58ch; }
+  .tl-item .print { width: min(100%, 270px); margin-top: 22px; --r: -2deg; }
+  .tl-item:nth-child(even) .print { --r: 2deg; --tr: 3deg; --tape: var(--b); margin-left: auto; }
+
+  /* Photo row */
+  .strip {
+    display: flex; gap: 18px; align-items: flex-start;
+    margin: 0 -20px; padding: 20px 24px 44px;
+    overflow-x: auto; overflow-y: hidden;
+    scroll-snap-type: x proximity; scrollbar-width: none;
+  }
+  .strip::-webkit-scrollbar { display: none; }
+  .strip .print { flex: none; width: min(66vw, 250px); scroll-snap-align: center; --r: -2deg; }
+  .strip .print:nth-child(even) { --r: 1.8deg; --tr: 3deg; --tape: var(--b); margin-top: 14px; }
+  .strip-hint { margin-top: -18px; text-align: right; color: var(--muted); }
+
+  /* Reasons: a stack of notes */
+  .notes { display: grid; justify-items: center; gap: 18px; overflow-x: clip; padding: 14px 0 4px; }
+  .note-stack { display: grid; width: min(100% - 28px, 340px); }
+  .note {
+    grid-area: 1 / 1;
+    position: relative;
+    background: var(--paper);
+    border-radius: 4px;
+    padding: 34px 24px 28px;
+    min-height: 220px;
+    display: grid; align-content: center; gap: 6px;
+    box-shadow: var(--lift);
+    rotate: var(--r, 0deg);
+    transition: transform .55s var(--ease), opacity .45s ease;
+    cursor: pointer;
+  }
+  .note:nth-child(3n + 2) { background: color-mix(in srgb, var(--a) 20%, var(--paper)); }
+  .note:nth-child(3n) { background: color-mix(in srgb, var(--b) 22%, var(--paper)); }
+  .note::before {
+    content: ""; position: absolute; top: -11px; left: 50%;
+    width: 86px; height: 24px; margin-left: -43px;
+    background: color-mix(in srgb, var(--a) 75%, transparent);
+    rotate: -3deg;
+  }
+  .note:nth-child(even)::before { background: color-mix(in srgb, var(--b) 80%, transparent); rotate: 2deg; }
+  .note.gone { transform: translate(14%, -70px) rotate(14deg); opacity: 0; pointer-events: none; }
+  .note-n { font-family: var(--hand); font-weight: 700; font-size: 1.4rem; line-height: 1; color: var(--accent); }
+  .note-t { font-family: var(--hand); font-weight: 600; font-size: 1.8rem; line-height: 1.2; }
+  .note-end { cursor: default; text-align: center; }
+  .note-bar { display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; }
+  .note-count { color: var(--muted); font-size: .95rem; }
+  .note-bar .btn { margin-top: 0; }
+
+  /* Song */
+  .song { display: flex; align-items: center; gap: 18px; color: var(--ink); text-decoration: none; }
+  .rec { position: relative; flex: none; width: 128px; height: 96px; }
+  .vinyl {
+    position: absolute; right: 0; top: 4px; width: 88px; aspect-ratio: 1; border-radius: 50%;
+    background:
+      radial-gradient(circle, var(--paper) 0 5%, var(--a) 5.5% 30%, transparent 31%),
+      repeating-radial-gradient(circle, #2a1a2b 0 1.6px, #46324a 1.6px 3.2px);
+  }
+  .sleeve {
+    position: absolute; left: 0; top: 0; width: 96px; aspect-ratio: 1; rotate: -4deg;
+    background: var(--b); box-shadow: var(--lift); border-radius: 3px;
+    display: grid; place-items: center;
+  }
+  .sleeve svg { width: 44px; height: 44px; fill: var(--paper); }
+  .song-info { display: grid; gap: 2px; min-width: 0; }
+  .song-t { font-weight: 700; font-size: 1.2rem; line-height: 1.25; overflow-wrap: anywhere; }
+  .song-a { color: var(--muted); }
+  .song-go { margin-top: 6px; font-weight: 600; color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+
+  /* Quiz: a sheet of paper */
+  .section h2.with-aside { margin-bottom: 6px; }
+  .teaser { color: var(--accent); margin-bottom: 20px; }
+  .quiz { position: relative; background: var(--paper); border-radius: 4px; padding: 26px 20px 24px; box-shadow: var(--lift); }
+  .q-step { font-family: var(--hand); font-weight: 700; font-size: 1.5rem; line-height: 1; color: var(--accent); }
+  .q-text { font-weight: 700; font-size: 1.3rem; line-height: 1.3; margin: 8px 0 18px; }
   .options { display: grid; gap: 10px; }
   .opt {
     font: inherit; text-align: left; color: var(--ink);
-    min-height: 48px; padding: 12px 16px;
-    border-radius: 16px;
-    border: 2px solid color-mix(in srgb, var(--ink) 14%, transparent);
-    background: var(--bg);
+    min-height: 50px; padding: 12px 16px;
+    border-radius: 18px 22px 20px 24px / 22px 18px 24px 20px;
+    border: 2px solid var(--line);
+    background: transparent;
     cursor: pointer;
     display: flex; justify-content: space-between; align-items: center; gap: 12px;
   }
@@ -159,86 +352,272 @@
   .opt:disabled { color: var(--ink); cursor: default; }
   .opt.right { background: var(--b); border-color: var(--ink); }
   .opt.wrong { background: var(--a); border-color: var(--ink); }
-  .tag { font-size: 0.75rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; white-space: nowrap; }
+  .tag { font-size: .8rem; font-weight: 600; white-space: nowrap; }
   .q-fb { margin-top: 16px; font-weight: 500; }
-  .score { font-family: var(--display); font-weight: 800; font-size: 3rem; line-height: 1.1; margin: 4px 0; }
+  .score { font-family: var(--hand); font-weight: 700; font-size: 4.2rem; line-height: 1; margin: 6px 0 8px; }
   .btn {
     font: inherit; font-weight: 600;
-    margin-top: 16px; min-height: 48px; padding: 12px 22px;
-    border-radius: 999px; border: 2px solid var(--accent);
-    background: var(--accent); color: var(--paper);
+    margin-top: 16px; min-height: 50px; padding: 12px 24px;
+    border-radius: 26px 30px 28px 32px / 30px 26px 32px 28px;
+    border: 2px solid var(--accent);
+    background: var(--accent); color: #fff;
     cursor: pointer;
   }
   .btn:hover { filter: brightness(0.94); }
+  .btn:active { scale: .97; }
   .btn.ghost { background: transparent; color: var(--accent); }
-  .opt:focus-visible, .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .opt:focus-visible, .btn:focus-visible, .env:focus-visible, .hug:focus-visible, .note:focus-visible, .song:focus-visible, .ph:focus-visible, .lb-x:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+  /* Prize coupons */
+  .prize { margin-top: 26px; display: grid; gap: 12px; }
+  .coupon {
+    position: relative; padding: 14px 28px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--a) 46%, var(--paper));
+    -webkit-mask:
+      radial-gradient(circle 11px at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 11px at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+    mask:
+      radial-gradient(circle 11px at 0 50%, #0000 98%, #000) left / 51% 100% no-repeat,
+      radial-gradient(circle 11px at 100% 50%, #0000 98%, #000) right / 51% 100% no-repeat;
+    display: grid; gap: 2px;
+    animation: rise .6s var(--ease) both;
+    animation-delay: calc(var(--i, 0) * 160ms);
+  }
+  .coupon.alt { background: color-mix(in srgb, var(--b) 52%, var(--paper)); }
+  .c-label { font-family: var(--hand); font-weight: 700; font-size: 1.35rem; line-height: 1; color: var(--accent); }
+  .c-text { font-weight: 700; font-size: 1.15rem; line-height: 1.3; }
+  .c-foot {
+    margin-top: 8px; padding-top: 8px; font-size: .85rem; color: var(--muted);
+    border-top: 2px dashed color-mix(in srgb, var(--ink) 24%, transparent);
+  }
+  .prize-note { font-size: .9rem; color: var(--muted); }
 
   /* Letter */
+  .envelope { display: grid; justify-items: center; gap: 14px; transition: opacity .4s ease, transform .4s ease; }
+  .envelope.leaving { opacity: 0; transform: translateY(16px); }
+  .env {
+    position: relative; display: block; width: min(100%, 400px); aspect-ratio: 1.5;
+    border: 0; padding: 0; font: inherit; color: var(--ink); cursor: pointer;
+    border-radius: 10px; perspective: 900px; rotate: -1.5deg;
+    background: color-mix(in srgb, var(--a) 62%, var(--paper));
+    box-shadow: var(--lift);
+  }
+  .env-pocket {
+    position: absolute; inset: 0; border-radius: 10px; z-index: 1;
+    background: color-mix(in srgb, var(--a) 36%, var(--paper));
+    clip-path: polygon(0 0, 50% 52%, 100% 0, 100% 100%, 0 100%);
+  }
+  .env-to {
+    position: absolute; left: 0; right: 0; bottom: 5%; z-index: 2;
+    font-family: var(--hand); font-weight: 700; font-size: 1.7rem; line-height: 1.2; text-align: center;
+  }
+  .env-flap {
+    position: absolute; left: 0; right: 0; top: 0; height: 56%; z-index: 3;
+    background: color-mix(in srgb, var(--a) 80%, var(--paper));
+    clip-path: polygon(0 0, 100% 0, 50% 100%);
+    border-radius: 10px 10px 0 0;
+    transform-origin: top;
+    transition: transform .6s cubic-bezier(.4, 0, .2, 1);
+  }
+  .seal {
+    position: absolute; left: 50%; top: 56%; z-index: 4;
+    width: 62px; height: 62px; margin: -31px 0 0 -31px;
+    border-radius: 50%;
+    background: var(--accent); color: #fff;
+    display: grid; place-items: center;
+    font-weight: 800; font-size: .95rem;
+    box-shadow: inset 0 0 0 4px rgba(255, 255, 255, .22), 0 8px 16px -8px var(--accent);
+    transition: scale .35s ease, opacity .35s ease;
+  }
+  .env.open .env-flap { transform: rotateX(180deg); }
+  .env.open .seal { scale: 0; opacity: 0; }
+  .env-hint { color: var(--muted); }
   .letter {
     background: var(--paper);
-    border-radius: 6px 28px 6px 28px;
-    padding: 28px 24px;
-    transform: rotate(-0.5deg);
+    border-radius: 3px;
+    padding: 30px 24px;
+    rotate: -.6deg;
     font-family: var(--hand);
     font-weight: 500;
-    font-size: 1.55rem;
+    font-size: 1.6rem;
     line-height: 1.4;
-    box-shadow: 0 18px 40px -24px color-mix(in srgb, var(--ink) 40%, transparent);
+    box-shadow: var(--lift);
   }
   .letter p + p { margin-top: 14px; }
-  .letter .sign { text-align: right; font-weight: 600; }
+  .letter .sign { text-align: right; font-weight: 700; }
+  .letter.reveal-lines > p { animation: rise .8s var(--ease) both; animation-delay: calc(var(--i) * 280ms); }
 
-  .foot { text-align: center; color: var(--muted); font-size: 0.9rem; padding: 48px 0 56px; }
+  /* Finale */
+  .finale { display: grid; justify-items: center; gap: 20px; text-align: center; }
+  .section.finale h2 { margin-bottom: 0; }
+  .hug {
+    width: 176px; aspect-ratio: 1; border: 0; cursor: pointer;
+    font-family: var(--hand); font-weight: 700; font-size: 2.1rem; color: var(--ink);
+    background:
+      radial-gradient(circle at 30% 30%, var(--a), transparent 68%),
+      radial-gradient(circle at 72% 72%, var(--b), transparent 68%),
+      color-mix(in srgb, var(--a) 50%, var(--b));
+    border-radius: 58% 42% 55% 45% / 48% 58% 42% 52%;
+    animation: morphA 9s ease-in-out infinite;
+  }
+  .hug.pop { animation: morphA 9s ease-in-out infinite, pop .55s var(--ease); }
+  @keyframes pop { 30% { scale: .85; } 70% { scale: 1.12; } 100% { scale: 1; } }
+  .finale-text { font-family: var(--hand); font-weight: 700; font-size: 2rem; line-height: 1.2; max-width: 24ch; text-wrap: balance; animation: rise .7s var(--ease) both; }
+
+  .heart { position: fixed; z-index: 60; pointer-events: none; overflow: visible; }
+
+  /* Photo opened full size */
+  .lb { border: 0; padding: 0; background: none; max-width: none; max-height: none; overflow: visible; color: #fff; }
+  .lb::backdrop { background: rgba(42, 26, 43, .9); }
+  .lb figure { background: var(--paper); padding: 10px 10px 12px; color: var(--ink); }
+  .lb img { display: block; max-width: min(88vw, 560px); max-height: 70vh; max-height: 70dvh; }
+  .lb figcaption { font-family: var(--hand); font-weight: 600; font-size: 1.6rem; line-height: 1.1; text-align: center; padding-top: 9px; max-width: min(88vw, 560px); }
+  .lb-x {
+    display: block; margin: 16px auto 0; min-height: 46px; padding: 8px 24px;
+    font: inherit; font-weight: 600; color: #fff; cursor: pointer;
+    background: none; border: 2px solid rgba(255, 255, 255, .7); border-radius: 999px;
+  }
+  .lb-x:focus-visible { outline-color: #fff; }
+
+  .foot { text-align: center; color: var(--muted); font-size: .9rem; padding: 72px 20px 56px; display: grid; gap: 8px; }
 
   @media (prefers-reduced-motion: reduce) {
-    .blob { animation: none !important; }
+    .blob, .iblob, .hug, .intro-stage::after, .ico svg.beat { animation: none !important; }
+    .stage.go .cover, .letter.reveal-lines > p, .coupon, .finale-text { animation: none; }
+    .note, .envelope, .env-flap { transition: none; }
   }
 </style>
 </head>
 <body>
 
+<svg class="icons" aria-hidden="true">
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 21.2s-7.6-4.7-9.7-9.4C.8 8.4 3 4.4 6.8 4.4c2.1 0 3.6 1.1 4.4 2.5.8-1.4 2.3-2.5 4.4-2.5 3.8 0 6 4 4.5 7.4-2.1 4.7-8.1 9.4-8.1 9.4z"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a6.9 6.9 0 0 0 10.7 10.7z"/></symbol>
+  <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3.2 2.1"/></symbol>
+</svg>
+
+<div class="intro" id="intro">
+  <p class="intro-to" id="intro-to">Это тебе</p>
+  <div class="intro-stage" id="intro-stage" role="button" tabindex="0" aria-label="Нажми и держи, чтобы открыть">
+    <div class="iblob a"><span id="ia"></span></div>
+    <div class="iblob b"><span id="ib"></span></div>
+    <div class="we" aria-hidden="true">мы</div>
+  </div>
+  <p class="intro-hint" id="intro-hint">Нажми и держи,<br>пока мы не встретимся</p>
+  <button class="intro-skip" id="intro-skip" type="button" hidden>Открыть без этого</button>
+</div>
+
 <header class="hero wrap">
   <h1 class="names" id="names"></h1>
-  <div class="stage">
+  <div class="stage" id="stage">
     <div class="blob a" aria-hidden="true"></div>
     <div class="blob b" aria-hidden="true"></div>
-    <div class="count">
-      <p class="count-label">мы вместе</p>
-      <p class="count-days" id="days">0</p>
-      <p class="count-word" id="days-word">дней</p>
-    </div>
   </div>
-  <div class="since" id="since"></div>
-  <div class="clock" role="timer" aria-live="off">
-    <div><b id="hh">00</b><span>часов</span></div>
-    <div><b id="mm">00</b><span>минут</span></div>
-    <div><b id="ss">00</b><span>секунд</span></div>
+  <div class="count" id="count">
+    <p class="count-label">вместе уже</p>
+    <p class="count-line"><span class="count-days" id="days">0</span><span class="count-word" id="days-word">дней</span></p>
   </div>
+  <p class="clock" role="timer" aria-live="off">и ещё <b id="hh">00</b> ч <b id="mm">00</b> мин <b id="ss">00</b> сек</p>
+  <p class="since" id="since"></p>
+  <p class="cue">листай, дальше про нас
+    <svg viewBox="0 0 24 40" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c-2 10 2 18 0 32M5 27l7 9 7-9"/></svg>
+  </p>
 </header>
 
 <main class="wrap">
+  <section class="section" aria-labelledby="h-numbers">
+    <h2 id="h-numbers">Мы в цифрах</h2>
+    <ul class="facts">
+      <li class="fact pulse">
+        <span class="ico" aria-hidden="true"><svg class="beat"><use href="#i-heart"/></svg></span>
+        <div class="fact-t"><b id="st-beats">0</b><span id="st-beats-w">раз стукнуло моё сердце, пока мы вместе</span><small>если считать по 70 ударов в минуту</small></div>
+      </li>
+      <li class="fact">
+        <span class="ico" aria-hidden="true"><svg><use href="#i-moon"/></svg></span>
+        <div class="fact-t"><b id="st-moons">0</b><span id="st-moons-w">полнолуний вместе</span></div>
+      </li>
+      <li class="fact">
+        <span class="ico" aria-hidden="true"><svg><use href="#i-clock"/></svg></span>
+        <div class="fact-t"><b id="st-hours">0</b><span id="st-hours-w">часов вместе</span></div>
+      </li>
+    </ul>
+    <div class="soon" id="miles-box" hidden>
+      <p class="aside">А скоро у нас</p>
+      <div class="miles" id="miles"></div>
+    </div>
+  </section>
+
   <section class="section" aria-labelledby="h-story">
-    <h2 id="h-story">Наша история</h2>
+    <h2 id="h-story">Как всё было</h2>
     <ol class="timeline" id="timeline"></ol>
+  </section>
+
+  <section class="section" aria-labelledby="h-photos" id="sec-photos" hidden>
+    <h2 id="h-photos">Наши кадры</h2>
+    <div class="strip" id="strip"></div>
+    <p class="aside strip-hint" id="strip-hint" hidden>листай вбок</p>
   </section>
 
   <section class="section" aria-labelledby="h-reasons">
     <h2 id="h-reasons">За что я тебя люблю</h2>
-    <div class="reasons" id="reasons"></div>
+    <div class="notes">
+      <div class="note-stack" id="note-stack"></div>
+      <div class="note-bar">
+        <span class="note-count" id="note-count" aria-live="polite"></span>
+        <button class="btn" id="note-next" type="button">Следующая записка</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="h-song" id="sec-song" hidden>
+    <h2 id="h-song">Наша песня</h2>
+    <a class="song" id="song" href="#" target="_blank" rel="noopener">
+      <span class="rec" aria-hidden="true">
+        <span class="vinyl"></span>
+        <span class="sleeve"><svg><use href="#i-heart"/></svg></span>
+      </span>
+      <span class="song-info">
+        <span class="song-t" id="song-t"></span>
+        <span class="song-a" id="song-a"></span>
+        <span class="song-go">Включить песню</span>
+      </span>
+    </a>
   </section>
 
   <section class="section" aria-labelledby="h-quiz">
     <h2 id="h-quiz">Как хорошо ты меня знаешь?</h2>
+    <p class="aside teaser" id="q-teaser" hidden>В конце тебя ждёт приз</p>
     <div class="quiz" id="quiz"></div>
   </section>
 
   <section class="section" aria-labelledby="h-letter">
-    <h2 id="h-letter">Письмо</h2>
-    <div class="letter" id="letter"></div>
+    <h2 id="h-letter">Письмо тебе</h2>
+    <div class="envelope" id="envelope">
+      <button class="env" id="env" type="button" aria-label="Открыть письмо">
+        <span class="env-pocket" aria-hidden="true"></span>
+        <span class="env-to" aria-hidden="true">для тебя</span>
+        <span class="env-flap" aria-hidden="true"></span>
+        <span class="seal" id="seal" aria-hidden="true"></span>
+      </button>
+      <p class="env-hint">Нажми на печать</p>
+    </div>
+    <div class="letter" id="letter" hidden></div>
+  </section>
+
+  <section class="section finale" aria-labelledby="h-finale">
+    <h2 id="h-finale">И последнее</h2>
+    <button class="hug" id="hug" type="button">Обнять</button>
+    <p class="finale-text" id="finale-text" aria-live="polite" hidden></p>
   </section>
 </main>
 
-<footer class="foot wrap" id="foot"></footer>
+<footer class="foot" id="foot"></footer>
+
+<dialog class="lb" id="lb" aria-label="Фото">
+  <figure><img id="lb-img" alt=""><figcaption id="lb-cap"></figcaption></figure>
+  <button class="lb-x" id="lb-x" type="button">Закрыть</button>
+</dialog>
 
 <noscript><p class="wrap">Для этой страницы нужен включённый JavaScript.</p></noscript>
 
@@ -248,15 +627,24 @@
    между метками GIFT-START и GIFT-END (его подставляет make_order.py).
    Формат: JSON (ключи в кавычках, без комментариев).
    - names: два имени в том порядке, как они стоят в заголовке.
+   - recipient: имя того, кому подарок (для заставки «Алина, это тебе»).
    - start: момент, с которого вместе, "ГГГГ-ММ-ДДTЧЧ:ММ:СС" (время зрителя).
-   - startLabel: подпись под счётчиком.
-   - moments: {date, title, text} — история пары.
-   - reasons: причины любви.
+   - startLabel: подпись «с 14 февраля 2025».
+   - colors: необязательно, два светлых цвета пары ["#rrggbb", "#rrggbb"].
+   - cover: необязательно, главное фото. Фото записывается как путь к файлу
+     или {"file": "путь", "caption": "подпись"}; make_order.py уменьшает его
+     и подставляет {"src", "w", "h", "caption"}.
+   - moments: {date, title, text, photo} — история пары, photo необязательно.
+   - photos: необязательно, фото для ряда «Наши кадры».
+   - reasons: причины любви (записки).
+   - song: необязательно, {title, artist, url} — ссылка на песню.
    - quiz: {q, options, answer, right, wrong}; answer — номер верного
      варианта с нуля.
    - quizResults: ключи "0".."N" — число верных ответов, N = длина quiz.
+   - coupons: необязательно, призы-купоны после викторины.
    - letter: {greeting, paragraphs, sign}.
-   - footer: строка внизу страницы, "" — без подписи.
+   - finale: необязательно, текст после кнопки «Обнять».
+   - footer: текст внизу страницы, "" — без подписи.
    ============================================================ */
 /* GIFT-START */
 const GIFT = {
@@ -264,33 +652,80 @@ const GIFT = {
     "Алина",
     "Дима"
   ],
+  "recipient": "Алина",
   "start": "2025-02-14T20:00:00",
   "startLabel": "с 14 февраля 2025",
+  "cover": {
+    "src": "p-02ca4123dc.jpg",
+    "w": 880,
+    "h": 1100,
+    "caption": "наш закат"
+  },
   "moments": [
     {
       "date": "14 февраля 2025",
       "title": "Первое «да»",
-      "text": "Ты написала: «ну ладно, давай». Это было самое романтичное «ну ладно» в моей жизни."
+      "text": "Ты написала: «ну ладно, давай». Это было самое романтичное «ну ладно» в моей жизни.",
+      "photo": {
+        "src": "p-976674774d.jpg",
+        "w": 880,
+        "h": 1100
+      }
     },
     {
       "date": "3 мая 2025",
       "title": "Первая поездка",
-      "text": "Опоздали на электричку, зато нашли лучшее место для рассвета. С тех пор я люблю опаздывать с тобой."
+      "text": "Опоздали на электричку, зато нашли лучшее место для рассвета. С тех пор я люблю опаздывать с тобой.",
+      "photo": {
+        "src": "p-b3d978ce79.jpg",
+        "w": 880,
+        "h": 1100
+      }
     },
     {
       "date": "Июль 2025",
       "title": "Первая катка вдвоём",
-      "text": "Ты сказала, что играешь просто чтобы побыть со мной. И выиграла. Я до сих пор не понимаю, как."
+      "text": "Ты сказала, что играешь просто чтобы побыть со мной. И выиграла. Я до сих пор не понимаю, как.",
+      "photo": {
+        "src": "p-b352a7de34.jpg",
+        "w": 880,
+        "h": 1100
+      }
     },
     {
       "date": "Сентябрь 2025",
       "title": "Расстояние",
-      "text": "Мы жили в разных городах. Писали друг другу каждое утро, и это работало лучше любых слов."
+      "text": "Мы жили в разных городах. Писали друг другу каждое утро, и это работало лучше любых слов.",
+      "photo": {
+        "src": "p-4e64348f0b.jpg",
+        "w": 880,
+        "h": 1100
+      }
     },
     {
       "date": "Сегодня",
       "title": "Дальше — больше",
       "text": "Впереди столько всего, и я хочу увидеть это с тобой."
+    }
+  ],
+  "photos": [
+    {
+      "src": "p-c189c8f0ed.jpg",
+      "w": 880,
+      "h": 1100,
+      "caption": "кофе по воскресеньям"
+    },
+    {
+      "src": "p-39eeb753d3.jpg",
+      "w": 880,
+      "h": 1100,
+      "caption": "первый снег"
+    },
+    {
+      "src": "p-a9f0620b23.jpg",
+      "w": 880,
+      "h": 1100,
+      "caption": "то самое море"
     }
   ],
   "reasons": [
@@ -301,6 +736,11 @@ const GIFT = {
     "Рядом с тобой я становлюсь лучше и не замечаю усилий.",
     "Ты мой любимый человек для любого «а давай прямо сейчас»."
   ],
+  "song": {
+    "title": "Хочешь?",
+    "artist": "Земфира",
+    "url": "https://music.yandex.ru/search?text=%D0%97%D0%B5%D0%BC%D1%84%D0%B8%D1%80%D0%B0%20%D0%A5%D0%BE%D1%87%D0%B5%D1%88%D1%8C"
+  },
   "quiz": [
     {
       "q": "Какой мой любимый напиток?",
@@ -345,6 +785,11 @@ const GIFT = {
     "1": "Есть куда расти. Нам нужно больше времени вместе.",
     "0": "Нам определённо нужно больше времени вместе. Начнём прямо сейчас."
   },
+  "coupons": [
+    "Завтрак в постель",
+    "Вечер без телефонов, только мы",
+    "Одно желание без вопросов"
+  ],
   "letter": {
     "greeting": "Алина,",
     "paragraphs": [
@@ -354,7 +799,8 @@ const GIFT = {
     ],
     "sign": "Твой Дима"
   },
-  "footer": "Хочешь такую же страницу для своей половинки? Напиши: @plohoygod"
+  "finale": "Принято! А теперь обними меня по-настоящему.",
+  "footer": "Алина и Дима вымышленные, поэтому вместо фото здесь рисунки. На твоей странице будут ваши фотографии.\nХочешь такую же страницу для своей половинки? Напиши: @plohoygod"
 };
 /* GIFT-END */
 
@@ -362,6 +808,9 @@ const GIFT = {
    Ниже менять не нужно.
    ============================================================ */
 const $ = (s) => document.querySelector(s);
+const root = document.documentElement;
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const coarse = matchMedia("(pointer: coarse)").matches;
 function el(tag, cls, text) {
   const n = document.createElement(tag);
   if (cls) n.className = cls;
@@ -369,59 +818,287 @@ function el(tag, cls, text) {
   return n;
 }
 function plural(n, forms) {
-  const a = Math.abs(n) % 100, b = a % 10;
+  const a = Math.abs(Math.floor(n)) % 100, b = a % 10;
   if (a > 10 && a < 20) return forms[2];
   if (b > 1 && b < 5) return forms[1];
   if (b === 1) return forms[0];
   return forms[2];
 }
 const pad = (n) => String(n).padStart(2, "0");
+const fmt = (n) => Math.floor(n).toLocaleString("ru-RU");
+const MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля",
+  "августа", "сентября", "октября", "ноября", "декабря"];
+const MONTHS_SHORT = ["янв", "фев", "мар", "апр", "мая", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"];
+const midnight = (d) => new Date(d.getFullYear(), d.getMonth(), d.getDate());
+const daysUntil = (d, now) => Math.round((midnight(d) - midnight(now)) / 864e5);
+const wait = (ms) => new Promise((r) => setTimeout(r, ms));
 
-/* Hero */
+/* The pair's two colours: blobs, tape, and the page itself (top in the first, bottom in the second). */
+(function colours() {
+  const ok = Array.isArray(GIFT.colors) && GIFT.colors.length === 2 && GIFT.colors.every((c) => /^#[0-9a-f]{6}$/i.test(c));
+  const [a, b] = ok ? GIFT.colors : ["#ff9fb6", "#a9c1ff"];
+  const tint = (hex, k) => "#" + [1, 3, 5].map((i) =>
+    Math.round(parseInt(hex.slice(i, i + 2), 16) * k + 255 * (1 - k)).toString(16).padStart(2, "0")).join("");
+  root.style.setProperty("--a", a);
+  root.style.setProperty("--b", b);
+  root.style.setProperty("--page-a", tint(a, 0.24));
+  root.style.setProperty("--page-b", tint(b, 0.26));
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = tint(a, 0.24);
+})();
+const initials = GIFT.names.map((n) => n.trim().charAt(0).toUpperCase());
+const start = new Date(GIFT.start).getTime();
+
+/* Hearts */
+const SVGNS = "http://www.w3.org/2000/svg";
+const HEART = "M12 21.2s-7.6-4.7-9.7-9.4C.8 8.4 3 4.4 6.8 4.4c2.1 0 3.6 1.1 4.4 2.5.8-1.4 2.3-2.5 4.4-2.5 3.8 0 6 4 4.5 7.4-2.1 4.7-8.1 9.4-8.1 9.4z";
+function burst(x, y, n, spread) {
+  if (reduced || !Element.prototype.animate) return;
+  const fills = ["var(--a)", "var(--b)", "var(--accent)"];
+  for (let i = 0; i < n; i++) {
+    const s = document.createElementNS(SVGNS, "svg");
+    s.setAttribute("viewBox", "0 0 24 24");
+    s.setAttribute("class", "heart");
+    s.setAttribute("aria-hidden", "true");
+    const p = document.createElementNS(SVGNS, "path");
+    p.setAttribute("d", HEART);
+    p.style.fill = fills[i % 3];
+    s.append(p);
+    const size = 12 + Math.random() * 16;
+    s.style.left = x + "px";
+    s.style.top = y + "px";
+    s.style.width = s.style.height = size + "px";
+    document.body.append(s);
+    const ang = Math.random() * Math.PI * 2;
+    const dist = spread * (0.45 + Math.random() * 0.75);
+    const dx = Math.cos(ang) * dist, dy = Math.sin(ang) * dist - spread * 0.35;
+    const rot = (Math.random() - 0.5) * 120;
+    s.animate([
+      { transform: "translate(-50%, -50%) scale(.3)", opacity: 1 },
+      { transform: `translate(calc(-50% + ${dx}px), calc(-50% + ${dy}px)) scale(1) rotate(${rot}deg)`, opacity: 0 }
+    ], { duration: 900 + Math.random() * 600, easing: "cubic-bezier(.2,.8,.2,1)" }).onfinish = () => s.remove();
+  }
+}
+function burstFrom(node, n, spread) {
+  const r = node.getBoundingClientRect();
+  burst(r.left + r.width / 2, r.top + r.height / 2, n, spread);
+}
+
+/* Photos: prints taped to the page; a tap opens the whole photo */
+const photo = (p) => {
+  if (!p) return null;
+  const o = typeof p === "string" ? { src: p } : { src: p.src || p.file, w: p.w, h: p.h, caption: p.caption };
+  return o.src ? o : null;
+};
+const ratio = (p, min, max) => (p.w && p.h ? String(Math.min(max, Math.max(min, p.w / p.h))) : "");
+const lb = $("#lb");
+function openPhoto(p) {
+  if (!lb.showModal) return;
+  $("#lb-img").src = p.src;
+  $("#lb-img").alt = p.caption || "Фото";
+  $("#lb-cap").textContent = p.caption || "";
+  $("#lb-cap").hidden = !p.caption;
+  lb.showModal();
+}
+lb.addEventListener("click", () => lb.close());
+function printEl(p, opts) {
+  const fig = el("figure", "print" + (opts.cls ? " " + opts.cls : ""));
+  if (opts.ratio) fig.style.setProperty("--ar", opts.ratio);
+  const btn = el("button", "ph");
+  btn.type = "button";
+  btn.setAttribute("aria-label", "Открыть фото" + (p.caption ? ": " + p.caption : ""));
+  const img = el("img");
+  img.alt = p.caption || opts.alt || "";
+  img.decoding = "async";
+  if (!opts.eager) img.loading = "lazy";
+  img.addEventListener("error", () => fig.remove());
+  img.src = p.src;
+  btn.append(img);
+  btn.addEventListener("click", () => openPhoto(p));
+  fig.append(btn);
+  const cap = opts.caption != null ? opts.caption : p.caption;
+  if (cap) fig.append(el("figcaption", null, cap));
+  return fig;
+}
+
+/* Counter and numbers */
+const daysEl = $("#days"), wordEl = $("#days-word");
+let counting = false;
+function setDays(n) {
+  daysEl.textContent = n;
+  wordEl.textContent = plural(n, ["день", "дня", "дней"]);
+}
+const MOON_REF = Date.UTC(2000, 0, 21, 4, 41);   // полнолуние 21 января 2000
+const SYNODIC = 29.530588853 * 864e5;
+function tick() {
+  const now = Date.now();
+  const ms = Math.max(0, now - start);
+  let d = ms;
+  const dd = Math.floor(d / 864e5); d -= dd * 864e5;
+  const h = Math.floor(d / 36e5); d -= h * 36e5;
+  const m = Math.floor(d / 6e4); d -= m * 6e4;
+  if (!counting) setDays(dd);
+  $("#hh").textContent = pad(h);
+  $("#mm").textContent = pad(m);
+  $("#ss").textContent = pad(Math.floor(d / 1e3));
+
+  const hours = Math.floor(ms / 36e5);
+  $("#st-hours").textContent = fmt(hours);
+  $("#st-hours-w").textContent = plural(hours, ["час", "часа", "часов"]) + " вместе";
+  const moons = ms ? Math.max(0, Math.floor((now - MOON_REF) / SYNODIC) - Math.floor((start - MOON_REF) / SYNODIC)) : 0;
+  $("#st-moons").textContent = fmt(moons);
+  $("#st-moons-w").textContent = plural(moons, ["полнолуние", "полнолуния", "полнолуний"]) + " вместе";
+  const beats = Math.floor(ms / 6e4 * 70);
+  $("#st-beats").textContent = fmt(beats);
+  $("#st-beats-w").textContent = plural(beats, ["раз", "раза", "раз"]) + " стукнуло моё сердце, пока мы вместе";
+}
+function countUp() {
+  const target = Math.floor(Math.max(0, Date.now() - start) / 864e5);
+  if (reduced || target < 2) return;
+  counting = true;
+  const t0 = performance.now(), D = 1600;
+  (function step() {
+    if (!counting) return;
+    const k = Math.min(1, Math.max(0, (performance.now() - t0) / D));
+    setDays(Math.round(target * (1 - Math.pow(1 - k, 3))));
+    if (k < 1) requestAnimationFrame(step); else { counting = false; tick(); }
+  })();
+  // Safety net if the phone skips frames: the real number always shows up.
+  setTimeout(() => { if (counting) { counting = false; tick(); } }, D + 100);
+}
+
 (function hero() {
-  const h1 = $("#names");
-  h1.append(GIFT.names[0], el("span", "amp", "и"), GIFT.names[1]);
+  $("#names").append(GIFT.names[0], el("span", "amp", "и"), GIFT.names[1]);
   $("#since").textContent = GIFT.startLabel;
-
-  const days = $("#days");
-  const word = $("#days-word");
-
-  const start = new Date(GIFT.start).getTime();
-  function tick() {
-    let d = Math.max(0, Date.now() - start);
-    const dd = Math.floor(d / 864e5); d -= dd * 864e5;
-    const h = Math.floor(d / 36e5); d -= h * 36e5;
-    const m = Math.floor(d / 6e4); d -= m * 6e4;
-    const s = Math.floor(d / 1e3);
-    days.textContent = dd;
-    word.textContent = plural(dd, ["день", "дня", "дней"]);
-    $("#hh").textContent = pad(h);
-    $("#mm").textContent = pad(m);
-    $("#ss").textContent = pad(s);
+  const stage = $("#stage"), cover = photo(GIFT.cover);
+  if (cover) {
+    const cap = cover.caption || GIFT.startLabel;
+    const fig = printEl(cover, { cls: "cover", caption: cap, eager: true, ratio: ratio(cover, 0.8, 1.25), alt: GIFT.names.join(" и ") });
+    fig.querySelector("img").addEventListener("error", () => { stage.classList.add("bare"); stage.append($("#count")); $("#since").hidden = false; });
+    stage.append(fig);
+    if (cap === GIFT.startLabel) $("#since").hidden = true;
+  } else {
+    stage.classList.add("bare");
+    stage.append($("#count"));
   }
   tick();
   setInterval(tick, 1000);
 })();
 
-/* Timeline */
+(function milestones() {
+  const now = new Date(), s = new Date(start);
+  if (!(now > s)) return;
+  const dd = Math.floor((now - s) / 864e5);
+  const items = [];
+  if (dd > 0 && dd % 100 === 0) {
+    items.push({ date: now, label: dd + " " + plural(dd, ["день", "дня", "дней"]) + " вместе" });
+  } else {
+    const next = (Math.floor(dd / 100) + 1) * 100;
+    items.push({ date: new Date(s.getTime() + next * 864e5), label: next + " дней вместе" });
+  }
+  let y = now.getFullYear() - s.getFullYear();
+  let ann = new Date(s); ann.setFullYear(s.getFullYear() + y);
+  if (midnight(ann) < midnight(now)) { y++; ann = new Date(s); ann.setFullYear(s.getFullYear() + y); }
+  if (y >= 1) items.push({ date: ann, label: y + " " + plural(y, ["год", "года", "лет"]) + " вместе" });
+  items.sort((a, b) => a.date - b.date);
+
+  const box = $("#miles");
+  items.forEach((it) => {
+    const n = daysUntil(it.date, now);
+    const when = n <= 0 ? "сегодня!"
+      : it.date.getDate() + " " + MONTHS[it.date.getMonth()]
+        + (it.date.getFullYear() !== now.getFullYear() ? " " + it.date.getFullYear() : "")
+        + (n === 1 ? ", уже завтра" : ", через " + n + " " + plural(n, ["день", "дня", "дней"]));
+    const card = el("div", "mile" + (n <= 0 ? " today" : ""));
+    const leaf = el("div", "leaf");
+    leaf.setAttribute("aria-hidden", "true");
+    leaf.append(el("span", null, MONTHS_SHORT[it.date.getMonth()]), el("b", null, String(it.date.getDate())));
+    const text = el("div", "mile-t");
+    text.append(el("b", null, it.label), el("span", null, when));
+    card.append(leaf, text);
+    box.append(card);
+  });
+  $("#miles-box").hidden = false;
+})();
+
+/* Story */
 GIFT.moments.forEach((m) => {
   const li = el("li", "tl-item");
-  const dot = el("span", "tl-dot");
+  const dot = document.createElementNS(SVGNS, "svg");
+  dot.setAttribute("class", "tl-dot");
+  dot.setAttribute("viewBox", "0 0 24 24");
   dot.setAttribute("aria-hidden", "true");
+  const path = document.createElementNS(SVGNS, "path");
+  path.setAttribute("d", HEART);
+  dot.append(path);
   li.append(dot, el("p", "tl-date", m.date), el("h3", "tl-title", m.title), el("p", "tl-text", m.text));
+  const p = photo(m.photo);
+  if (p) li.append(printEl(p, { ratio: ratio(p, 0.8, 1.5), alt: m.title }));
   $("#timeline").append(li);
 });
 
-/* Reasons */
-GIFT.reasons.forEach((t, i) => {
-  const card = el("article", "reason");
-  card.append(el("p", "reason-n", pad(i + 1)), el("p", "reason-t", t));
-  $("#reasons").append(card);
-});
+/* Photo row */
+(function photos() {
+  const shots = (Array.isArray(GIFT.photos) ? GIFT.photos : []).map(photo).filter(Boolean);
+  if (!shots.length) return;
+  const strip = $("#strip");
+  shots.forEach((p) => strip.append(printEl(p, {})));
+  $("#sec-photos").hidden = false;
+  $("#strip-hint").hidden = shots.length < 2;
+})();
+
+/* Reasons: pull the notes one by one */
+(function notes() {
+  const stack = $("#note-stack"), count = $("#note-count"), next = $("#note-next");
+  const total = GIFT.reasons.length;
+  const cards = GIFT.reasons.map((t, i) => {
+    const n = el("article", "note");
+    n.style.setProperty("--r", ((i * 5) % 9 - 4) + "deg");
+    n.style.zIndex = String(total + 1 - i);
+    n.append(el("p", "note-n", "№ " + (i + 1)), el("p", "note-t", t));
+    n.addEventListener("click", () => { if (i === pos) pull(); });
+    return n;
+  });
+  const end = el("article", "note note-end");
+  end.style.setProperty("--r", "1.5deg");
+  end.style.zIndex = "0";
+  end.append(el("p", "note-t", "И ещё сто причин, которые не поместились на бумагу."));
+  stack.append(...cards, end);
+
+  let pos = 0;
+  function update() {
+    if (pos < total) {
+      count.textContent = "Записка " + (pos + 1) + " из " + total;
+      next.textContent = pos < total - 1 ? "Следующая записка" : "Дальше";
+    } else {
+      count.textContent = "Все записки прочитаны";
+      next.textContent = "Собрать заново";
+    }
+  }
+  function pull() {
+    if (pos < total) { cards[pos].classList.add("gone"); pos++; }
+    else { cards.forEach((c) => c.classList.remove("gone")); pos = 0; }
+    update();
+  }
+  next.addEventListener("click", pull);
+  update();
+})();
+
+/* Song */
+(function song() {
+  const s = GIFT.song;
+  if (!s || !s.title || !/^https:\/\//.test(s.url || "")) return;
+  $("#song").href = s.url;
+  $("#song-t").textContent = s.title;
+  $("#song-a").textContent = s.artist || "";
+  $("#sec-song").hidden = false;
+})();
 
 /* Quiz */
 (function quiz() {
   const box = $("#quiz");
+  const coupons = Array.isArray(GIFT.coupons) ? GIFT.coupons.filter(Boolean) : [];
+  if (coupons.length) { $("#q-teaser").hidden = false; $("#h-quiz").classList.add("with-aside"); }
   let i = 0, score = 0;
 
   function renderQuestion() {
@@ -443,7 +1120,7 @@ GIFT.reasons.forEach((t, i) => {
       b.append(el("span", null, text));
       b.addEventListener("click", () => {
         const ok = k === q.answer;
-        if (ok) score++;
+        if (ok) { score++; burstFrom(b, 14, 110); }
         [...opts.children].forEach((c, j) => {
           c.disabled = true;
           if (j === q.answer) { c.classList.add("right"); c.append(el("span", "tag", "Верный ответ")); }
@@ -451,7 +1128,7 @@ GIFT.reasons.forEach((t, i) => {
         });
         fb.textContent = ok ? q.right : q.wrong;
         next.hidden = false;
-        next.focus();
+        next.focus({ preventScroll: true });
       });
       opts.append(b);
     });
@@ -471,30 +1148,152 @@ GIFT.reasons.forEach((t, i) => {
   function renderResult() {
     box.replaceChildren();
     const n = GIFT.quiz.length;
+    const sc = el("p", "score", score + " из " + n);
     const again = el("button", "btn ghost", "Пройти ещё раз");
     again.type = "button";
     again.id = "quiz-again";
     again.addEventListener("click", () => { i = 0; score = 0; renderQuestion(); });
-    box.append(
-      el("p", "q-step", "Результат"),
-      el("p", "score", score + " из " + n),
-      el("p", "q-fb", GIFT.quizResults[score] || ""),
-      again
-    );
+    box.append(el("p", "q-step", "Результат"), sc, el("p", "q-fb", GIFT.quizResults[score] || ""));
+
+    if (coupons.length) {
+      const prize = el("div", "prize");
+      prize.append(el("p", "aside", coupons.length > 1 ? "Твои призы" : "Твой приз"));
+      coupons.forEach((t, k) => {
+        const c = el("div", "coupon" + (k % 2 ? " alt" : ""));
+        c.style.setProperty("--i", k);
+        c.append(el("span", "c-label", "Купон"), el("p", "c-text", t), el("span", "c-foot", "Действует всегда. Предъяви мне в любой момент."));
+        prize.append(c);
+      });
+      prize.append(el("p", "prize-note", "Сделай скриншот, чтобы не потерять."));
+      box.append(prize);
+    }
+    box.append(again);
+    if (score === n || coupons.length) setTimeout(() => burstFrom(sc, 30, 180), 60);
   }
 
   renderQuestion();
 })();
 
-/* Letter */
+/* Letter in an envelope */
 (function letter() {
-  const box = $("#letter");
-  box.append(el("p", null, GIFT.letter.greeting));
-  GIFT.letter.paragraphs.forEach((t) => box.append(el("p", null, t)));
-  box.append(el("p", "sign", GIFT.letter.sign));
+  const env = $("#env"), wrap = $("#envelope"), box = $("#letter");
+  $("#seal").textContent = initials[0] + "&" + initials[1];
+  const lines = [el("p", null, GIFT.letter.greeting)];
+  GIFT.letter.paragraphs.forEach((t) => lines.push(el("p", null, t)));
+  lines.push(el("p", "sign", GIFT.letter.sign));
+  lines.forEach((p, k) => p.style.setProperty("--i", k));
+  box.append(...lines);
+  env.addEventListener("click", async () => {
+    if (env.classList.contains("open")) return;
+    env.classList.add("open");
+    burstFrom($("#seal"), 12, 90);
+    if (!reduced) { await wait(650); wrap.classList.add("leaving"); await wait(380); }
+    wrap.hidden = true;
+    box.hidden = false;
+    box.classList.add("reveal-lines");
+  });
 })();
 
-$("#foot").textContent = GIFT.footer;
+/* Finale */
+(function finale() {
+  const btn = $("#hug"), txt = $("#finale-text");
+  btn.addEventListener("click", () => {
+    burstFrom(btn, 36, 220);
+    if (navigator.vibrate) navigator.vibrate([15, 30, 15]);
+    btn.classList.remove("pop");
+    void btn.offsetWidth;
+    btn.classList.add("pop");
+    txt.textContent = GIFT.finale || "Принято! А теперь обними меня по-настоящему.";
+    txt.hidden = false;
+  });
+})();
+
+String(GIFT.footer || "").split("\n").filter(Boolean).forEach((t) => $("#foot").append(el("p", null, t)));
+
+/* Intro: hold until the two blobs meet */
+let opened = false;
+function openPage(instant) {
+  if (opened) return;
+  opened = true;
+  const intro = $("#intro");
+  root.classList.remove("locked");
+  root.classList.add("opened");
+  $("#stage").classList.add("go");
+  countUp();
+  if (instant) { intro.remove(); return; }
+  intro.classList.add("done");
+  setTimeout(() => intro.remove(), 1100);
+}
+(function intro() {
+  if (location.hash === "#open") { openPage(true); return; }
+  root.classList.add("locked");
+  const stage = $("#intro-stage"), hint = $("#intro-hint"), skip = $("#intro-skip");
+  $("#intro-to").textContent = GIFT.recipient ? GIFT.recipient + ", это тебе" : "Это тебе";
+  $("#ia").textContent = initials[0];
+  $("#ib").textContent = initials[1];
+  hint.replaceChildren(coarse ? "Приложи палец и держи," : "Нажми и держи,", el("br"), "пока мы не встретимся");
+
+  if (reduced) {
+    hint.textContent = "Нажми, чтобы открыть";
+    stage.addEventListener("click", () => openPage(false));
+    stage.addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); openPage(false); } });
+    return;
+  }
+
+  // Progress depends on how long the screen is held, not on frames:
+  // a slow phone that drops frames still opens after HOLD ms.
+  const HOLD = 1600, BACK = 500;
+  let holding = false, met = false, raf = 0, t0 = 0, p0 = 0, timer = 0;
+  const progress = (now) => holding
+    ? Math.min(1, p0 + (now - t0) / HOLD)
+    : Math.max(0, p0 - (now - t0) / BACK);
+  function frame() {
+    const p = progress(performance.now());
+    stage.style.setProperty("--p", p.toFixed(3));
+    raf = (holding && p < 1) || (!holding && p > 0) ? requestAnimationFrame(frame) : 0;
+  }
+  function press(e) {
+    if (opened || met || holding) return;
+    if (e && e.pointerId != null) { try { stage.setPointerCapture(e.pointerId); } catch (_) {} }
+    const now = performance.now();
+    p0 = progress(now); t0 = now; holding = true;
+    stage.classList.add("holding");
+    if (navigator.vibrate) navigator.vibrate(8);
+    clearTimeout(timer);
+    timer = setTimeout(finish, (1 - p0) * HOLD);
+    if (!raf) raf = requestAnimationFrame(frame);
+  }
+  function release() {
+    if (!holding || met) return;
+    const now = performance.now();
+    p0 = progress(now); t0 = now; holding = false;
+    clearTimeout(timer);
+    stage.classList.remove("holding");
+    if (!raf) raf = requestAnimationFrame(frame);
+  }
+  function finish() {
+    met = true;
+    holding = false;
+    cancelAnimationFrame(raf);
+    raf = 0;
+    stage.style.setProperty("--p", "1");
+    stage.classList.remove("holding");
+    stage.classList.add("met");
+    if (navigator.vibrate) navigator.vibrate([20, 40, 30]);
+    burstFrom(stage, 26, 170);
+    setTimeout(() => openPage(false), 650);
+  }
+  stage.addEventListener("pointerdown", (e) => { e.preventDefault(); press(e); });
+  stage.addEventListener("pointerup", release);
+  stage.addEventListener("pointercancel", release);
+  stage.addEventListener("contextmenu", (e) => e.preventDefault());
+  stage.addEventListener("keydown", (e) => {
+    if ((e.key === " " || e.key === "Enter") && !e.repeat) { e.preventDefault(); press(); }
+  });
+  stage.addEventListener("keyup", (e) => { if (e.key === " " || e.key === "Enter") release(); });
+  skip.addEventListener("click", () => openPage(false));
+  setTimeout(() => { if (!opened) skip.hidden = false; }, 7000);
+})();
 </script>
 </body>
 </html>
