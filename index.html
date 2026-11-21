@@ -313,24 +313,39 @@
   .note-bar .btn { margin-top: 0; }
 
   /* Song */
-  .song { display: flex; align-items: center; gap: 18px; color: var(--ink); text-decoration: none; }
-  .rec { position: relative; flex: none; width: 128px; height: 96px; }
+  .song { display: flex; align-items: center; gap: 16px; }
+  .rec { position: relative; flex: none; width: 172px; height: 104px; cursor: pointer; }
   .vinyl {
-    position: absolute; right: 0; top: 4px; width: 88px; aspect-ratio: 1; border-radius: 50%;
+    position: absolute; right: 0; top: 4px; width: 96px; aspect-ratio: 1; border-radius: 50%;
     background:
-      radial-gradient(circle, var(--paper) 0 5%, var(--a) 5.5% 30%, transparent 31%),
+      radial-gradient(circle, var(--a) 0 17%, transparent 17.5%),
       repeating-radial-gradient(circle, #2a1a2b 0 1.6px, #46324a 1.6px 3.2px);
   }
+  .vinyl::after {
+    content: ""; position: absolute; left: 50%; top: 50%; width: 6%; aspect-ratio: 1;
+    translate: -50% -50%; border-radius: 50%; background: var(--paper);
+  }
+  .label-img { position: absolute; left: 50%; top: 50%; width: 42%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; object-fit: cover; }
+  .song.playing .vinyl { animation: spin 3.6s linear infinite; }
+  @keyframes spin { to { rotate: 360deg; } }
   .sleeve {
-    position: absolute; left: 0; top: 0; width: 96px; aspect-ratio: 1; rotate: -4deg;
-    background: var(--b); box-shadow: var(--lift); border-radius: 3px;
+    position: absolute; left: 0; top: 0; width: 100px; aspect-ratio: 1; rotate: -4deg;
+    background: var(--b); box-shadow: var(--lift); border-radius: 3px; overflow: hidden;
     display: grid; place-items: center;
   }
   .sleeve svg { width: 44px; height: 44px; fill: var(--paper); }
-  .song-info { display: grid; gap: 2px; min-width: 0; }
+  .sleeve-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .song-info { display: grid; gap: 2px; min-width: 0; justify-items: start; }
   .song-t { font-weight: 700; font-size: 1.2rem; line-height: 1.25; overflow-wrap: anywhere; }
   .song-a { color: var(--muted); }
-  .song-go { margin-top: 6px; font-weight: 600; color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+  .song-go {
+    margin-top: 6px; padding: 0; border: 0; background: none; font: inherit; text-align: left; cursor: pointer;
+    font-weight: 600; color: var(--accent); text-decoration: underline; text-underline-offset: 4px;
+  }
+  .player { margin-top: 20px; }
+  .player iframe { display: block; width: 100%; height: 244px; border: 0; border-radius: 14px; background: var(--paper); box-shadow: var(--lift); }
+  .player-alt { margin-top: 10px; font-size: .92rem; color: var(--muted); }
+  .player-alt a { color: var(--accent); text-underline-offset: 3px; }
 
   /* Quiz: a sheet of paper */
   .section h2.with-aside { margin-bottom: 6px; }
@@ -366,7 +381,7 @@
   .btn:hover { filter: brightness(0.94); }
   .btn:active { scale: .97; }
   .btn.ghost { background: transparent; color: var(--accent); }
-  .opt:focus-visible, .btn:focus-visible, .env:focus-visible, .hug:focus-visible, .note:focus-visible, .song:focus-visible, .ph:focus-visible, .lb-x:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+  .opt:focus-visible, .btn:focus-visible, .env:focus-visible, .hug:focus-visible, .note:focus-visible, .song-go:focus-visible, .ph:focus-visible, .lb-x:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 
   /* Prize coupons */
   .prize { margin-top: 26px; display: grid; gap: 12px; }
@@ -483,7 +498,7 @@
   .foot { text-align: center; color: var(--muted); font-size: .9rem; padding: 72px 20px 56px; display: grid; gap: 8px; }
 
   @media (prefers-reduced-motion: reduce) {
-    .blob, .iblob, .hug, .intro-stage::after, .ico svg.beat { animation: none !important; }
+    .blob, .iblob, .hug, .intro-stage::after, .ico svg.beat, .song.playing .vinyl { animation: none !important; }
     .stage.go .cover, .letter.reveal-lines > p, .coupon, .finale-text { animation: none; }
     .note, .envelope, .env-flap { transition: none; }
   }
@@ -572,17 +587,20 @@
 
   <section class="section" aria-labelledby="h-song" id="sec-song" hidden>
     <h2 id="h-song">Наша песня</h2>
-    <a class="song" id="song" href="#" target="_blank" rel="noopener">
-      <span class="rec" aria-hidden="true">
-        <span class="vinyl"></span>
-        <span class="sleeve"><svg><use href="#i-heart"/></svg></span>
+    <div class="song" id="song">
+      <span class="rec" id="song-rec" aria-hidden="true">
+        <span class="vinyl"><img class="label-img" id="song-label" alt="" hidden></span>
+        <span class="sleeve"><svg><use href="#i-heart"/></svg><img class="sleeve-img" id="song-cover" alt="" hidden></span>
       </span>
       <span class="song-info">
         <span class="song-t" id="song-t"></span>
         <span class="song-a" id="song-a"></span>
-        <span class="song-go">Включить песню</span>
+        <a class="song-go" id="song-go" href="#" target="_blank" rel="noopener">Включить песню</a>
+        <button class="song-go" id="song-play" type="button" hidden>Включить песню</button>
       </span>
-    </a>
+    </div>
+    <div class="player" id="player" hidden></div>
+    <p class="player-alt" id="player-alt" hidden>Не играет? <a id="song-open" href="#" target="_blank" rel="noopener">Открой песню в приложении</a></p>
   </section>
 
   <section class="section" aria-labelledby="h-quiz">
@@ -637,7 +655,9 @@
    - moments: {date, title, text, photo} — история пары, photo необязательно.
    - photos: необязательно, фото для ряда «Наши кадры».
    - reasons: причины любви (записки).
-   - song: необязательно, {title, artist, url} — ссылка на песню.
+   - song: необязательно, {title, artist, url} — ссылка на песню. Можно добавить
+     cover (адрес обложки, https) и embed (адрес плеера Яндекс Музыки,
+     https://music.yandex.ru/iframe/...).
    - quiz: {q, options, answer, right, wrong}; answer — номер верного
      варианта с нуля.
    - quizResults: ключи "0".."N" — число верных ответов, N = длина quiz.
@@ -1088,9 +1108,45 @@ GIFT.moments.forEach((m) => {
 (function song() {
   const s = GIFT.song;
   if (!s || !s.title || !/^https:\/\//.test(s.url || "")) return;
-  $("#song").href = s.url;
+  const go = $("#song-go"), play = $("#song-play");
+  go.href = s.url;
   $("#song-t").textContent = s.title;
   $("#song-a").textContent = s.artist || "";
+
+  // Cover on the sleeve and on the record label. It is loaded from the music service itself;
+  // if it does not load, the heart stays.
+  if (/^https:\/\//.test(s.cover || "")) {
+    [$("#song-cover"), $("#song-label")].forEach((img) => {
+      img.referrerPolicy = "no-referrer";
+      img.decoding = "async";
+      img.addEventListener("load", () => { img.hidden = false; });
+      img.addEventListener("error", () => img.remove());
+      img.src = s.cover;
+    });
+  }
+
+  // The music service's own player, opened right on the page. Only Yandex Music for now.
+  const embed = /^https:\/\/music\.yandex\.ru\/iframe\//.test(s.embed || "") ? s.embed : "";
+  if (embed) {
+    go.hidden = true;
+    play.hidden = false;
+    play.addEventListener("click", () => {
+      const box = $("#player");
+      const f = el("iframe");
+      f.title = "Плеер: " + s.title;
+      f.allow = "autoplay; encrypted-media; clipboard-write";
+      f.src = embed;
+      box.append(f);
+      box.hidden = false;
+      $("#song-open").href = s.url;
+      $("#player-alt").hidden = false;
+      $("#song").classList.add("playing");
+      play.hidden = true;
+    });
+  }
+  $("#song-rec").addEventListener("click", () => {
+    if (embed) { if (!play.hidden) play.click(); } else go.click();
+  });
   $("#sec-song").hidden = false;
 })();
 
